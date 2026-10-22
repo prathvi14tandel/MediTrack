@@ -1,0 +1,379 @@
+﻿
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+    body {
+        background: #f5f3ff;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        color: #211d3b;
+    }
+
+    .mt-welcome {
+        background: linear-gradient(135deg, #191632, #5141a5, #7657f6);
+        color: white;
+        padding: 42px;
+        border-radius: 22px;
+        margin-bottom: 28px;
+        box-shadow: 0 12px 30px rgba(81, 65, 165, .18);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .mt-welcome::after {
+        content: "✚";
+        position: absolute;
+        right: 35px;
+        top: 5px;
+        font-size: 150px;
+        color: rgba(255,255,255,.07);
+    }
+
+    .mt-eyebrow {
+        color: #d9ff78;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    .mt-welcome h1 {
+        font-size: 38px;
+        font-weight: 800;
+        margin: 14px 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .mt-welcome p {
+        color: #e5e0ff;
+        line-height: 1.8;
+        max-width: 600px;
+    }
+
+    .mt-primary-btn {
+        display: inline-block;
+        background: #d9ff78;
+        color: #211d3b;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-weight: 750;
+        margin-top: 12px;
+    }
+
+    .mt-primary-btn:hover {
+        background: #c8f15e;
+        color: #211d3b;
+    }
+
+    .mt-section-heading {
+        font-size: 21px;
+        font-weight: 800;
+        color: #211d3b;
+        margin-bottom: 5px;
+    }
+
+    .mt-section-subtitle {
+        color: #89839f;
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+
+    .mt-stat-card {
+        background: white;
+        border: 1px solid #eae5fa;
+        border-radius: 17px;
+        padding: 22px;
+        height: 100%;
+        box-shadow: 0 5px 20px rgba(35,25,80,.045);
+        transition: transform .2s;
+    }
+
+    .mt-stat-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .mt-stat-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .mt-stat-icon {
+        display: grid;
+        place-items: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        font-size: 24px;
+    }
+
+    .purple-icon { background: #eee9ff; }
+    .green-icon { background: #e4f8ed; }
+    .orange-icon { background: #fff1dc; }
+    .pink-icon { background: #ffe8f0; }
+
+    .mt-stat-label {
+        color: #89839f;
+        font-size: 13px;
+        margin-top: 20px;
+    }
+
+    .mt-stat-number {
+        font-size: 32px;
+        font-weight: 800;
+        margin-top: 5px;
+        color: #211d3b;
+    }
+
+    .mt-stat-note {
+        color: #918ba5;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .mt-panel {
+        background: white;
+        border: 1px solid #eae5fa;
+        border-radius: 17px;
+        padding: 24px;
+        height: 100%;
+        box-shadow: 0 5px 20px rgba(35,25,80,.045);
+    }
+
+    .mt-panel-title {
+        font-size: 17px;
+        font-weight: 800;
+        color: #211d3b;
+    }
+
+    .mt-panel-description {
+        font-size: 12px;
+        color: #89839f;
+        margin-top: 5px;
+    }
+
+    .mt-quick-link {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 15px 0;
+        border-bottom: 1px solid #f0edf8;
+        text-decoration: none;
+        color: #30294d;
+    }
+
+    .mt-quick-link:last-child {
+        border-bottom: none;
+    }
+
+    .mt-quick-link:hover .mt-quick-title {
+        color: #7657f6;
+    }
+
+    .mt-quick-icon {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        background: #f0ecff;
+        border-radius: 12px;
+        font-size: 22px;
+    }
+
+    .mt-quick-title {
+        font-size: 14px;
+        font-weight: 750;
+    }
+
+    .mt-quick-description {
+        color: #89839f;
+        font-size: 12px;
+        margin-top: 4px;
+    }
+
+    .mt-arrow {
+        margin-left: auto;
+        color: #9a91ba;
+        font-size: 20px;
+    }
+
+    .mt-notice {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 15px;
+        border-radius: 12px;
+        background: #fff7e9;
+        margin-top: 20px;
+        color: #765222;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .mt-bottom-note {
+        text-align: center;
+        padding: 25px 10px 5px;
+        color: #9a94ad;
+        font-size: 12px;
+    }
+
+    @@media (max-width: 767px) {
+        .mt-welcome { padding: 25px; }
+        .mt-welcome h1 { font-size: 29px; }
+        .mt-stat-number { font-size: 27px; }
+    }
+</style>
+
+<div class="mt-welcome">
+    <div class="mt-eyebrow">MEDICINE INVENTORY MANAGEMENT</div>
+    <h1>Welcome to MediTrack ✦</h1>
+    <p>
+        Your smart workspace for managing medicine stock,
+        monitoring expiry dates, and keeping inventory organized.
+        Everything you need, all in one place.
+    </p>
+    <a href="/Medicines" class="mt-primary-btn">+ Manage Medicines</a>
+</div>
+
+<div class="d-flex justify-content-between align-items-end flex-wrap mb-3">
+    <div>
+        <div class="mt-section-heading">Inventory Overview</div>
+        <div class="mt-section-subtitle">
+            A quick overview of your medicine management workspace.
+        </div>
+    </div>
+    <div class="text-muted small mb-3">
+        <span style="color:#7657f6">●</span> Dashboard
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="mt-stat-card">
+            <div class="mt-stat-top">
+                <span class="mt-stat-icon purple-icon">💊</span>
+                <span style="color:#7657f6;font-size:12px;font-weight:700">INVENTORY</span>
+            </div>
+            <div class="mt-stat-label">Total Medicines</div>
+            <div class="mt-stat-number">@ViewBag.TotalMedicines</div>
+            <div class="mt-stat-note">Medicine records in stock</div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="mt-stat-card">
+            <div class="mt-stat-top">
+                <span class="mt-stat-icon green-icon">✓</span>
+                <span style="color:#23945e;font-size:12px;font-weight:700">AVAILABLE</span>
+            </div>
+            <div class="mt-stat-label">In Stock</div>
+            <div class="mt-stat-number">@ViewBag.InStock</div>
+            <div class="mt-stat-note">Medicines with available quantity</div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="mt-stat-card">
+            <div class="mt-stat-top">
+                <span class="mt-stat-icon orange-icon">⚠</span>
+                <span style="color:#c17a19;font-size:12px;font-weight:700">ATTENTION</span>
+            </div>
+            <div class="mt-stat-label">Low Stock</div>
+            <div class="mt-stat-number">@ViewBag.LowStock</div>
+            <div class="mt-stat-note">Medicines needing a stock check</div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="mt-stat-card">
+            <div class="mt-stat-top">
+                <span class="mt-stat-icon pink-icon">◷</span>
+                <span style="color:#d54c82;font-size:12px;font-weight:700">EXPIRY</span>
+            </div>
+            <div class="mt-stat-label">Expiry Alerts</div>
+            <div class="mt-stat-number">@ViewBag.ExpiryAlerts</div>
+            <div class="mt-stat-note">Expired or soon-to-expire items</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-12 col-lg-7">
+        <div class="mt-panel">
+            <div class="mt-panel-title">Quick Actions</div>
+            <div class="mt-panel-description">Jump straight to the task you need.</div>
+
+            <a href="/Medicines" class="mt-quick-link">
+                <span class="mt-quick-icon">📦</span>
+                <span>
+                    <span class="mt-quick-title d-block">Medicine Inventory</span>
+                    <span class="mt-quick-description d-block">View and manage medicine records.</span>
+                </span>
+                <span class="mt-arrow">›</span>
+            </a>
+
+            <a href="/Medicines" class="mt-quick-link">
+                <span class="mt-quick-icon" style="background:#fff1dc">⏰</span>
+                <span>
+                    <span class="mt-quick-title d-block">Expiry Monitoring</span>
+                    <span class="mt-quick-description d-block">Review medicine expiry dates.</span>
+                </span>
+                <span class="mt-arrow">›</span>
+            </a>
+
+            <a href="/Medicines" class="mt-quick-link">
+                <span class="mt-quick-icon" style="background:#e4f8ed">＋</span>
+                <span>
+                    <span class="mt-quick-title d-block">Add Medicine</span>
+                    <span class="mt-quick-description d-block">Open the medicine management section.</span>
+                </span>
+                <span class="mt-arrow">›</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-5">
+        <div class="mt-panel">
+            <div class="mt-panel-title">Inventory Care</div>
+            <div class="mt-panel-description">
+                Good practices for maintaining reliable stock records.
+            </div>
+
+            <div class="mt-notice">
+                <span style="font-size:22px">📅</span>
+                <span>
+                    <strong>Check expiry dates regularly</strong><br />
+                    Review upcoming and expired medicine dates and follow
+                    your organization's medicine disposal policy.
+                </span>
+            </div>
+
+            <div class="mt-notice" style="background:#f0ecff;color:#5141a5">
+                <span style="font-size:22px">📋</span>
+                <span>
+                    <strong>Keep stock records updated</strong><br />
+                    Record quantities and supplier details accurately
+                    whenever inventory changes.
+                </span>
+            </div>
+
+            <div class="mt-notice" style="background:#e7f7ee;color:#24794f">
+                <span style="font-size:22px">🔎</span>
+                <span>
+                    <strong>Review low-stock medicines</strong><br />
+                    Check quantities regularly so replenishment can be
+                    planned on time.
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-bottom-note">
+    MediTrack · Medicine Expiry and Stock Management System
+    <br />
+    Organized inventory. Better visibility. Smarter management.
+</div>

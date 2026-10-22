@@ -1,0 +1,133 @@
+
+@model IEnumerable<MediTrack.Models.Medicine>
+
+@{
+    ViewData["Title"] = "Expiry Tracking";
+
+    var today = DateTime.Today;
+    var medicines = Model
+        .Where(m => m.ExpiryDate.HasValue)
+        .Where(m => m.ExpiryDate!.Value.Date <= today.AddDays(30))
+        .OrderBy(m => m.ExpiryDate)
+        .ToList();
+}
+
+<style>
+    .expiry-page {
+        padding: 25px;
+        color: #202447;
+    }
+
+    .expiry-page h1 {
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .expiry-subtitle {
+        color: #737891;
+        margin-bottom: 25px;
+    }
+
+    .expiry-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .expiry-table th, .expiry-table td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #eeeeF5;
+    }
+
+    .expiry-table th {
+        background: #202447;
+        color: white;
+    }
+
+    .expiry-badge {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .expired {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .soon {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .empty-message {
+        padding: 30px;
+        text-align: center;
+        background: #ecfdf5;
+        color: #166534;
+        border-radius: 12px;
+    }
+</style>
+
+<div class="expiry-page">
+    <h1>Expiry Tracking</h1>
+    <p class="expiry-subtitle">
+        Automatically monitor medicines expiring within the next 30 days.
+    </p>
+
+    <h3>Medicines Requiring Attention (@medicines.Count)</h3>
+
+    @if (!medicines.Any())
+    {
+        <div class="empty-message">
+            <h3>All Clear!</h3>
+            No expired medicines or medicines expiring within 30 days.
+        </div>
+    }
+    else
+    {
+        <table class="expiry-table">
+            <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Batch Number</th>
+                    <th>Quantity</th>
+                    <th>Expiry Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var medicine in medicines)
+                {
+                    var expiryDate = medicine.ExpiryDate!.Value.Date;
+                    var daysLeft = (expiryDate - today).Days;
+                    <tr>
+                        <td>@medicine.MedicineName</td>
+                        <td>@medicine.BatchNumber</td>
+                        <td>@medicine.Quantity</td>
+                        <td>@expiryDate.ToString("dd MMM yyyy")</td>
+                        <td>
+                            @if (daysLeft < 0)
+                            {
+                                <span class="expiry-badge expired">
+                                    Expired (@Math.Abs(daysLeft) days ago)
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="expiry-badge soon">
+                                    @(daysLeft == 0 ? "Expires today" : $"{daysLeft} days left")
+                                </span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

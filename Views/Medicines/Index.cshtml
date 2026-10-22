@@ -1,0 +1,272 @@
+
+@model IEnumerable<MediTrack.Models.Medicine>
+
+@{
+    ViewData["Title"] = "Medicine Inventory";
+    var medicines = Model.ToList();
+}
+
+<style>
+    .inventory-page {
+        padding: 28px 0;
+        color: #202342;
+    }
+
+    .inventory-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+    }
+
+    .inventory-header h1 {
+        font-size: 30px;
+        font-weight: 800;
+        margin: 0 0 8px;
+    }
+
+    .inventory-header p {
+        color: #777b92;
+        margin: 0;
+    }
+
+    .add-medicine-btn {
+        background: #6c63ff;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .add-medicine-btn:hover {
+        background: #554be8;
+        color: white;
+    }
+
+    .inventory-summary {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .summary-card {
+        background: white;
+        border: 1px solid #ececf5;
+        border-radius: 16px;
+        padding: 20px;
+    }
+
+    .summary-card span {
+        display: block;
+        color: #777b92;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .summary-card strong {
+        font-size: 27px;
+    }
+
+    .inventory-table-card {
+        background: white;
+        border: 1px solid #ececf5;
+        border-radius: 18px;
+        padding: 20px;
+        overflow: hidden;
+    }
+
+    .inventory-table-card h2 {
+        font-size: 19px;
+        font-weight: 800;
+        margin: 0 0 18px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .inventory-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 760px;
+    }
+
+    .inventory-table th {
+        background: #f7f7fc;
+        color: #777b92;
+        font-size: 12px;
+        text-transform: uppercase;
+        padding: 14px;
+        text-align: left;
+    }
+
+    .inventory-table td {
+        padding: 15px 14px;
+        border-bottom: 1px solid #eeeef5;
+        font-size: 14px;
+    }
+
+    .medicine-name {
+        font-weight: 700;
+    }
+
+    .stock-badge {
+        background: #e5f8ed;
+        color: #16834b;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .low-stock-badge {
+        background: #fff0d8;
+        color: #a56300;
+    }
+
+    .out-stock-badge {
+        background: #ffe5e5;
+        color: #c62828;
+    }
+
+    .action-link {
+        color: #655bea;
+        text-decoration: none;
+        font-weight: 700;
+        margin-right: 10px;
+    }
+
+    .delete-link {
+        color: #d14343;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 38px 10px;
+        color: #777b92;
+    }
+
+    @@media (max-width: 650px) {
+        .inventory-summary {
+            grid-template-columns: 1fr;
+        }
+
+        .inventory-header h1 {
+            font-size: 25px;
+        }
+    }
+</style>
+
+<div class="inventory-page">
+    <div class="inventory-header">
+        <div>
+            <h1>Medicine Inventory 💊</h1>
+            <p>Manage your medicines, stock levels and expiry dates.</p>
+        </div>
+
+        <a asp-controller="Medicines"
+           asp-action="Create"
+           class="add-medicine-btn">
+            + Add Medicine
+        </a>
+    </div>
+
+    <div class="inventory-summary">
+        <div class="summary-card">
+            <span>Total Medicine Records</span>
+            <strong>@medicines.Count</strong>
+        </div>
+
+        <div class="summary-card">
+            <span>Units in Stock</span>
+            <strong>@medicines.Sum(m => m.Quantity)</strong>
+        </div>
+
+        <div class="summary-card">
+            <span>Low / Out of Stock</span>
+            <strong>@medicines.Count(m => m.Quantity <= 10)</strong>
+        </div>
+    </div>
+
+    <div class="inventory-table-card">
+        <h2>All Medicines</h2>
+
+        <div class="table-responsive">
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Category</th>
+                        <th>Batch No.</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Expiry Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (!medicines.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                No medicines found. Click "Add Medicine" to get started.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var medicine in medicines)
+                        {
+                            <tr>
+                                <td class="medicine-name">
+                                    @medicine.MedicineName
+                                </td>
+                                <td>@(medicine.Category ?? "—")</td>
+                                <td>@(medicine.BatchNumber ?? "—")</td>
+                                <td>
+                                    @if (medicine.Quantity == 0)
+                                    {
+                                        <span class="stock-badge out-stock-badge">
+                                            Out of stock
+                                        </span>
+                                    }
+                                    else if (medicine.Quantity <= 10)
+                                    {
+                                        <span class="stock-badge low-stock-badge">
+                                            @medicine.Quantity left
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="stock-badge">
+                                            @medicine.Quantity
+                                        </span>
+                                    }
+                                </td>
+                                <td>₹@medicine.Price.ToString("N2")</td>
+                                <td>
+                                    @(medicine.ExpiryDate?.ToString("dd MMM yyyy") ?? "—")
+                                </td>
+                                <td>
+                                    <a asp-action="Edit"
+                                       asp-route-id="@medicine.MedicineId"
+                                       class="action-link">Edit</a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@medicine.MedicineId"
+                                       class="action-link delete-link">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

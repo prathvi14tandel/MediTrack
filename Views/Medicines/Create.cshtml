@@ -1,0 +1,199 @@
+
+@model MediTrack.Models.Medicine
+
+@{
+    ViewData["Title"] = "Add Medicine";
+}
+
+<style>
+    .form-page {
+        max-width: 850px;
+        margin: 30px auto;
+        color: #202342;
+    }
+
+    .form-heading {
+        margin-bottom: 25px;
+    }
+
+    .form-heading h1 {
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .form-heading p {
+        color: #777b92;
+    }
+
+    .medicine-form-card {
+        background: white;
+        padding: 28px;
+        border: 1px solid #ececf5;
+        border-radius: 18px;
+        box-shadow: 0 8px 30px rgba(32, 35, 66, 0.04);
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .field {
+        margin-bottom: 18px;
+    }
+
+    .field label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .field input,
+    .field select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #dedfee;
+        border-radius: 10px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .field input:focus,
+    .field select:focus {
+        outline: none;
+        border-color: #6c63ff;
+        box-shadow: 0 0 0 3px #6c63ff18;
+    }
+
+    .form-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .save-btn {
+        background: #6c63ff;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 20px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .cancel-btn {
+        background: #f0efff;
+        color: #554be8;
+        border-radius: 10px;
+        padding: 12px 20px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .validation {
+        color: #c62828;
+        margin-bottom: 15px;
+    }
+
+    @@media (max-width: 600px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .medicine-form-card {
+            padding: 18px;
+        }
+    }
+</style>
+
+<div class="form-page">
+    <div class="form-heading">
+        <h1>＋ Add New Medicine</h1>
+        <p>Enter the medicine details to update your inventory.</p>
+    </div>
+
+    <div class="medicine-form-card">
+        <form asp-controller="Medicines"
+              asp-action="Create"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="All" class="validation"></div>
+
+            <div class="form-grid">
+                <div class="field">
+                    <label asp-for="MedicineName">Medicine Name *</label>
+                    <input asp-for="MedicineName"
+                           placeholder="e.g. Paracetamol"
+                           required />
+                    <span asp-validation-for="MedicineName"
+                          class="validation"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Category">Category</label>
+                    <input asp-for="Category"
+                           placeholder="e.g. Tablet, Syrup" />
+                </div>
+
+                <div class="field">
+                    <label asp-for="BatchNumber">Batch Number</label>
+                    <input asp-for="BatchNumber"
+                           placeholder="e.g. BATCH001" />
+                </div>
+
+                <div class="field">
+                    <label asp-for="Quantity">Quantity *</label>
+                    <input asp-for="Quantity"
+                           type="number"
+                           min="0"
+                           value="0"
+                           required />
+                </div>
+
+                <div class="field">
+                    <label asp-for="Price">Price (₹) *</label>
+                    <input asp-for="Price"
+                           type="number"
+                           min="0"
+                           step="0.01"
+                           value="0"
+                           required />
+                </div>
+
+                <div class="field">
+                    <label asp-for="SupplierName">Supplier Name</label>
+                    <input asp-for="SupplierName"
+                           placeholder="Enter supplier name" />
+                </div>
+
+                <div class="field">
+                    <label asp-for="ManufactureDate">Manufacture Date</label>
+                    <input asp-for="ManufactureDate" type="date" />
+                </div>
+
+                <div class="field">
+                    <label asp-for="ExpiryDate">Expiry Date</label>
+                    <input asp-for="ExpiryDate" type="date" />
+                </div>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="save-btn">
+                    Save Medicine
+                </button>
+
+                <a asp-controller="Medicines"
+                   asp-action="Index"
+                   class="cancel-btn">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

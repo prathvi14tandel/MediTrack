@@ -1,0 +1,180 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MediTrack</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <style>
+        :root {
+            --mt-green: #167d68;
+            --mt-dark: #163d36;
+            --mt-light: #eff7f4;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f8f7;
+            color: #243b36;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .mt-navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e5eeea;
+            padding: 15px 0;
+        }
+
+        .mt-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--mt-dark);
+            text-decoration: none;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .mt-logo {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            background: var(--mt-green);
+            color: white;
+            border-radius: 13px;
+            font-size: 23px;
+        }
+
+        .mt-brand small {
+            display: block;
+            color: #81928c;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .mt-nav-link {
+            color: #60736d;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 14px;
+            border-radius: 9px;
+            transition: 0.2s;
+        }
+
+        .mt-nav-link:hover,
+        .mt-nav-link.active {
+            background: var(--mt-light);
+            color: var(--mt-green);
+        }
+
+        .mt-status {
+            background: #e7f6ee;
+            color: #167d50;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .mt-main {
+            min-height: calc(100vh - 155px);
+            padding-top: 28px;
+            padding-bottom: 40px;
+        }
+
+        .mt-footer {
+            background: #ffffff;
+            border-top: 1px solid #e5eeea;
+            color: #7b8b85;
+            padding: 18px 0;
+            font-size: 13px;
+        }
+
+        @@media (max-width: 767px) {
+            .mt-navbar .container {
+                gap: 14px;
+            }
+
+            .mt-nav-links {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+
+            .mt-nav-link {
+                padding: 8px;
+                font-size: 13px;
+            }
+
+            .mt-status {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="mt-navbar">
+            <div class="container d-flex align-items-center
+                        justify-content-between flex-wrap">
+
+                <a class="mt-brand" asp-controller="Home"
+                   asp-action="Index">
+                    <span class="mt-logo">✚</span>
+                    <span>
+                        MediTrack
+                        <small>MEDICINE MANAGEMENT</small>
+                    </span>
+                </a>
+
+                <div class="mt-nav-links d-flex align-items-center
+                            flex-wrap mt-2 mt-md-0">
+                    <a class="mt-nav-link active"
+                       asp-controller="Home"
+                       asp-action="Index">⌂ Dashboard</a>
+
+                    <a class="mt-nav-link" href="/Medicines">
+                        ▤ Medicines
+                    </a>
+                    <a asp-controller="Expiry" asp-action="Index" class="nav-link">
+    Expiry Tracking
+</a>
+
+                    
+                </div>
+
+                <span class="mt-status">● Inventory System</span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="mt-main">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="mt-footer">
+        <div class="container d-flex justify-content-between
+                    flex-wrap gap-2">
+            <span>© 2026 MediTrack · Medicine Inventory System</span>
+            <span>Organized stock. Safer expiry management.</span>
+        </div>
+    </footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
